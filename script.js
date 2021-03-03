@@ -85,6 +85,7 @@ function getAPI(){
                 }
                 tempWeather.uvi = data.current.uvi;
                 console.log(tempWeather);
+                fill();
                 return data;
             })
             .catch(function (error) {
@@ -94,8 +95,12 @@ function getAPI(){
       .catch(function (error) {
         console.error('There has been a problem with your fetch operation:', error);
       })
-
+  
 }   
+
+function fill(){
+$("#weather-icon").attr("src", "http://openweathermap.org/img/wn/" + tempWeather.icon + "@2x.png")
+}
 
 $("#search-btn").on("click", getAPI);
 
