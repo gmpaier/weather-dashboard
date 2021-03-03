@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <section>
+        <div class = "row">
+            <div class = "col-4">
+                
+                <h1>Search</h1>
+                <form>
+                    <label for="city">City:</label>
+                    <input type="text" id="city-input"><br><br>
+                    <button type="button" id="search-btn" class="btn btn-primary">Search</button>
+                </form>
+
+            </div>
+            <div class = "col-8">
+                <h1>Results</h1>
+                <br>
+                <h5>Name: <span id="city-name"></span></h5>
+                <h5>Date: <span id="date"></span></h5>
+                <h5>Weather Condition: <span id="weather-con"></span></h5><br>
+                <figure id="weather-icon"></figure><br>
+                <h5>Temperature: <span id="temperature"></span></h5>
+                <h5>Humidity: <span id="humidity"></span></h5>
+                <h5>Wind Speed: <span id="wind-speed"></span></h5>
+                <h5>UV Index: <span id="uvi"></span></h5>
+                <h5 id="uv-color">UV Color</h5>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+</body>    
+</html>
