@@ -58,7 +58,7 @@ function getAPI(){
       })
       .then(function (data) {
           tempWeather.name = data.name;
-          tempWeather.date = data.dt;
+          tempWeather.date = new Date(parseInt(data.dt)*1000);
           tempWeather.cond = data.weather[0].main;
           tempWeather.desc = data.weather[0].description;
           tempWeather.icon = data.weather[0].icon;
@@ -78,7 +78,7 @@ function getAPI(){
             .then(function (data) {
                 for (let i = 1; i<6; i++){
                     let day = "day" + i;
-                    tempWeather[day].date = data.daily[i].dt;
+                    tempWeather[day].date = new Date(parseInt(data.daily[i].dt)*1000);
                     tempWeather[day].icon = data.daily[i].weather[0].icon;
                     tempWeather[day].temp = data.daily[i].temp.day;
                     tempWeather[day].humidity = data.daily[i].humidity;
@@ -96,8 +96,6 @@ function getAPI(){
       })
 
 }   
-
-
 
 $("#search-btn").on("click", getAPI);
 
