@@ -6,20 +6,24 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <h1>Weather Dashboard</h1>
+    </header>
     <section>
         <div class = "row">
             <div class = "col-4">
-                
-                <h1>Search</h1>
+                <h4>Search for a city:</h4>
                 <form>
-                    <label for="city">City:</label>
-                    <input type="text" id="city-input"><br><br>
+                    <input type="text" id="city-input">
                     <button type="button" id="search-btn" class="btn btn-primary">Search</button>
                 </form>
-
+                <br>
+                <ul class="list-group">
+                    <button type="button" class="list-group-item list-group-item-action short">A test item</button>
+                </ul>
             </div>
             <div class = "col-8">
-                <h1>Results</h1>
+                <h3>Results</h3>
                 <br>
                 <h5>Name: <span id="city-name"></span></h5>
                 <h5>Date: <span id="date"></span></h5>
