@@ -1,11 +1,28 @@
-var tempWeather = {
+function Weather(name, date, cond, icon, temp, hum, wind, lat, lon, uvi, day1, day2, day3, day4, day5){
+  this.name = name;
+  this.date = date;
+  this.cond = cond;
+  this.icon = icon;
+  this.temp = temp;
+  this.hum = hum;
+  this.wind = wind;
+  this.lat = lat;
+  this.lon = lon;
+  this.uvi = uvi;
+  this.day1 = day1;
+  this.day2 = day2;
+  this.day3 = day3;
+  this.day4 = day4;
+  this.day5 = day5;   
+}
+
+var tempData = {
   name: "",
   date: "",
   cond: "",
-  desc: "",
   icon: "",
   temp: "",
-  humidity: "",
+  hum: "",
   wind: "",
   lat: "",
   lon: "",
@@ -14,38 +31,42 @@ var tempWeather = {
     date: "",
     icon: "",
     temp: "",
-    humidity: ""
+    hum: ""
   },
   day2: {
     date: "",
     icon: "",
     temp: "",
-    humidity: ""
+    hum: ""
   },
   day3: {
     date: "",
     icon: "",
     temp: "",
-    humidity: ""
+    hum: ""
   },
   day4: {
     date: "",
     icon: "",
     temp: "",
-    humidity: ""
+    hum: ""
   },
   day5: {
     date: "",
     icon: "",
     temp: "",
-    humidity: ""
+    hum: ""
   } 
 };
 
-const key = "75f04fe88f0718f0439006e20e72ddf1";
+let cityList = [];
+
+
 
 function getAPI(){
-  var city = $("#city-input").val();
+  const key = "75f04fe88f0718f0439006e20e72ddf1";
+  $("#display").show();
+  let city = $("#city-input").val();
   city = city.trim();
   var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + key;
 
@@ -57,17 +78,17 @@ function getAPI(){
         return response.json();
       })
       .then(function (data) {
-          tempWeather.name = data.name;
-          tempWeather.date = new Date(parseInt(data.dt)*1000);
-          tempWeather.cond = data.weather[0].main;
-          tempWeather.desc = data.weather[0].description;
-          tempWeather.icon = data.weather[0].icon;
-          tempWeather.temp = data.main.temp;
-          tempWeather.humidity = data.main.humidity;
-          tempWeather.wind = data.wind.speed;
-          tempWeather.lat = data.coord.lat;
-          tempWeather.lon = data.coord.lon;
-          var oneUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + tempWeather.lat + "&lon=" + tempWeather.lon + "&units=imperial&appid=" + key;
+          console.log(data);
+          tempData.name = data.name;
+          tempData.date = new Date(parseInt(data.dt)*1000);
+          tempData.cond = data.weather[0].main;
+          tempData.icon = data.weather[0].icon;
+          tempData.temp = data.main.temp;
+          tempData.hum = data.main.humidity;
+          tempData.wind = data.wind.speed;
+          tempData.lat = data.coord.lat;
+          tempData.lon = data.coord.lon;
+          var oneUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + tempData.lat + "&lon=" + tempData.lon + "&units=imperial&appid=" + key;
           return fetch(oneUrl)
             .then(function (response) {
                 if (response.status !== 200){
@@ -76,16 +97,16 @@ function getAPI(){
                 return response.json();
             })
             .then(function (data) {
-                for (let i = 1; i<6; i++){
+                for (let i = 1; i < 6; i++){
                     let day = "day" + i;
-                    tempWeather[day].date = new Date(parseInt(data.daily[i].dt)*1000);
-                    tempWeather[day].icon = data.daily[i].weather[0].icon;
-                    tempWeather[day].temp = data.daily[i].temp.day;
-                    tempWeather[day].humidity = data.daily[i].humidity;
+                    tempData[day].date = new Date(parseInt(data.daily[i].dt)*1000);
+                    tempData[day].icon = data.daily[i].weather[0].icon;
+                    tempData[day].temp = data.daily[i].temp.day;
+                    tempData[day].hum = data.daily[i].humidity;
                 }
-                tempWeather.uvi = data.current.uvi;
-                console.log(tempWeather);
-                fill();
+                tempData.uvi = data.current.uvi;
+                fill(tempData);
+                cityList[cityList.length] = new Weather(tempData.name, tempData.date, tempData.cond, tempData.icon, tempData.temp, tempData.hum, tempData.wind, tempData.lat, tempData.lon, tempData.uvi, tempData.day1, tempData.day2, tempData.day3, tempData.day4, tempData.day5);
                 return data;
             })
             .catch(function (error) {
@@ -98,28 +119,28 @@ function getAPI(){
   
 }   
 
-function fill(){
-$("#weather-icon").attr("src", "http://openweathermap.org/img/wn/" + tempWeather.icon + "@2x.png")
+function fill(city){
+  $("#city-name").text(city.name);
+  $("#date").text("("+ displayDate(city.date) + ")");
+  $("#weather-icon").attr("src", "http://openweathermap.org/img/wn/" + city.icon + "@2x.png");
+  $("#temperature").text(city.temp);
+  $("#humidity").text(city.hum);
+  $("#wind-speed").text(city.wind);
+  $("#uvi").text(city.uvi);
+  for (let i = 1; i < 6; i++){
+    let day = "day" + i;
+    $("#date"+i).text(displayDate(city[day].date));
+    $("#icon"+i).attr("src", "http://openweathermap.org/img/wn/" + city[day].icon + "@2x.png");
+    $("#temp"+i).text(city[day].temp);
+    $("#hum"+i).text(city[day].hum);
+  }
 }
 
+function displayDate (dt){
+  let format = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+  return format;
+}
+
+//Runtime
+$("#display").hide();
 $("#search-btn").on("click", getAPI);
-
-
-// What do I need?
-//where to get from?? one call can get 5 day and current but requires lon/lat... otherwise multiple api calls
-
-    //name: name
-    //date: dt
-    //weather condition: weather[i].main & weather[i].description
-    //weather condition icon: weather[i].icon
-    //temp: main.temp
-        //make sure units are in API call
-    //humidity: main.humidity
-    //wind speed: wind.speed
-
-    //lat for 2nd call: coord.lat
-    //lon for 2nd call: coord.long
-
-//seperate API call
-    //call: https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&appid={API key}
-    //uv index: current.uvi
