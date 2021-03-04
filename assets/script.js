@@ -1,3 +1,6 @@
+//Functions and Variables
+
+  //Constructor function for city weather data
 function Weather(name, date, icon, temp, hum, wind, lat, lon, uvi, day1, day2, day3, day4, day5){
   this.name = name;
   this.date = date;
@@ -15,6 +18,7 @@ function Weather(name, date, icon, temp, hum, wind, lat, lon, uvi, day1, day2, d
   this.day5 = {date: day5.date, icon: day5.icon, temp: day5.temp, hum: day5.hum};
 }
 
+  //object to temporarily store city weather data
 var tempData = {
   name: "",
   date: "",
@@ -57,10 +61,14 @@ var tempData = {
   } 
 };
 
-let today = Date.now();
+  //Weather-Object array, save to local storage
 let cityList = [];
 
+  //today's date for reference
+let today = Date.now();
 
+
+  //compares city in search to stored cities: calls API if name does not match or if date is old, else loads data
 function searchCity(){
   let city = $("#city-input").val();
   city = city.trim();
@@ -90,6 +98,7 @@ function searchCity(){
   }
 }
 
+  //loads saved city data, calls API for fresh data if old
 function clickCity(){
   let key = parseInt(this.value);
   let now = displayDate(today)
@@ -103,6 +112,8 @@ function clickCity(){
   }
 }
 
+  //Performs two API calls: first call to Current Weather API, then gets lat/lon parameters for call to One Call API.
+    // Stores in tempData object and saves to local storage
 function getAPI(city){
   const key = "75f04fe88f0718f0439006e20e72ddf1";
   var requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + key;
@@ -157,6 +168,7 @@ function getAPI(city){
   
 }
 
+  //Colors the UV index background based on conditions
 function colorUvi(uvi){
   if (uvi < 3){
     $("#uvi").css("background-color", "green");
@@ -169,10 +181,12 @@ function colorUvi(uvi){
   }
 }
 
+  //Adds a list item button of city for search history
 function addCity(city, val){
   $(".list-group").append('<button type="button" class="list-group-item list-group-item-action short" value="'+ val + '">' + city.name + '</button>');
 }
 
+  //displays content on page for the chosen city
 function fill(city){
   $("#city-name").text(city.name);
   $("#date").text("("+ displayDate(city.date) + ")");
@@ -191,12 +205,14 @@ function fill(city){
   }
 }
 
+  //converts UTC time into mm/dd/yyyy format
 function displayDate (utc){
   let dt = new Date(utc);
   let format = (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
   return format;
 }
 
+  //loads stored weather data
 function loadData(){
   if(localStorage.getItem("weatherData") === null){}
   else{
@@ -207,7 +223,7 @@ function loadData(){
   }
   
 }
-
+  //clears stored weather data
 function clearData(){
   $(".list-group").empty();
   localStorage.removeItem("weatherData");
