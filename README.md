@@ -1,5 +1,7 @@
 # weather-dashboard
 
+[See the deployed application here](https://gmpaier.github.io/weather-dashboard/)
+
 ## Objective: 
 Create a weather dashboard for potential travellers so that they can view weather conditions in multiple cities.
 
@@ -20,6 +22,9 @@ As a bonus, I tried at every step to minimize the amount of API calls, and inste
 ## Content:
 
 index.html - html of application
+
 assets - 
+
     script.js - javascript of application
+    
     style.css - auxilary styling not handled by Bootstrap
