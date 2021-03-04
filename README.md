@@ -22,4 +22,4 @@ As a bonus, I tried at every step to minimize the amount of API calls, and inste
 index.html - html of application
 assets - 
     script.js - javascript of application
-    style.css - auxilary styling not handled 
+    style.css - auxilary styling not handled by Bootstrap
